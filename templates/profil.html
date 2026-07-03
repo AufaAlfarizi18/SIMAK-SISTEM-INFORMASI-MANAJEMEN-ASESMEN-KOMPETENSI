@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block eyebrow %}Akun{% endblock %}
+{% block page_title %}Profil Asesor{% endblock %}
+
+{% block content %}
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:18px; max-width:900px;">
+
+  <div class="card card-pad">
+    <h3>Biodata Asesor</h3>
+    <form method="POST">
+      <input type="hidden" name="form_type" value="biodata">
+      <div class="field">
+        <label for="nama">Nama Lengkap &amp; Gelar</label>
+        <input type="text" id="nama" name="nama" value="{{ user.nama }}">
+      </div>
+      <div class="field">
+        <label for="no_reg">Nomor Registrasi Asesor</label>
+        <input type="text" id="no_reg" name="no_reg" value="{{ user.no_reg }}">
+      </div>
+      <div class="field">
+        <label for="spesialisasi">Spesialisasi / Bidang Kompetensi</label>
+        <input type="text" id="spesialisasi" name="spesialisasi" value="{{ user.spesialisasi }}">
+      </div>
+      <div class="field">
+        <label for="instansi">Instansi / LSP</label>
+        <input type="text" id="instansi" name="instansi" value="{{ user.instansi }}">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="{{ user.email }}">
+      </div>
+      <div class="field">
+        <label for="no_hp">No. HP</label>
+        <input type="text" id="no_hp" name="no_hp" value="{{ user.no_hp }}">
+      </div>
+      <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+    </form>
+  </div>
+
+  <div class="card card-pad">
+    <h3>Ubah Password</h3>
+    <form method="POST">
+      <input type="hidden" name="form_type" value="password">
+      <div class="field">
+        <label for="password_lama">Password Lama</label>
+        <input type="password" id="password_lama" name="password_lama" required>
+      </div>
+      <div class="field">
+        <label for="password_baru">Password Baru</label>
+        <input type="password" id="password_baru" name="password_baru" required minlength="6">
+      </div>
+      <div class="field">
+        <label for="password_konfirmasi">Konfirmasi Password Baru</label>
+        <input type="password" id="password_konfirmasi" name="password_konfirmasi" required minlength="6">
+      </div>
+      <button type="submit" class="btn btn-primary">Perbarui Password</button>
+    </form>
+
+    <hr style="border:none; border-top:1px solid var(--line); margin:20px 0;">
+    <h3 style="font-size:1rem;">Ringkasan Aktivitas</h3>
+    <p style="color:var(--muted); font-size:.85rem;">
+      Username: <strong>{{ user.username }}</strong><br>
+      ID Asesor: <strong>#{{ user.id }}</strong>
+    </p>
+  </div>
+
+</div>
+{% endblock %}

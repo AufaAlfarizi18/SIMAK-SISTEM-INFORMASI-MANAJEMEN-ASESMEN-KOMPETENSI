@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}SIMAK{% endblock %} — Sistem Informasi Manajemen Asesmen Kompetensi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="mark">SK</div>
+      <div class="title">SIMAK</div>
+      <div class="subtitle">Asesmen Kompetensi</div>
+    </div>
+    <nav>
+      <div class="section-label">Menu Utama</div>
+      <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint=='dashboard' }}"><span class="letter">B</span> Dashboard</a>
+      <a href="{{ url_for('peserta_list') }}" class="{{ 'active' if request.endpoint and request.endpoint.startswith('peserta') }}"><span class="letter">C</span> Data Peserta</a>
+      <a href="{{ url_for('jadwal_list') }}" class="{{ 'active' if request.endpoint and request.endpoint.startswith('jadwal') }}"><span class="letter">D</span> Jadwal Asesmen</a>
+      <a href="{{ url_for('penilaian_list') }}" class="{{ 'active' if request.endpoint and request.endpoint.startswith('penilaian') }}"><span class="letter">E</span> Penilaian Kompetensi</a>
+      <a href="{{ url_for('laporan') }}" class="{{ 'active' if request.endpoint and request.endpoint.startswith('laporan') }}"><span class="letter">F</span> Rekap &amp; Laporan</a>
+      <div class="section-label">Akun</div>
+      <a href="{{ url_for('profil') }}" class="{{ 'active' if request.endpoint=='profil' }}"><span class="letter">G</span> Profil Asesor</a>
+    </nav>
+    {% if current_user %}
+    <div class="userbox">
+      <div class="uname">{{ current_user.nama }}</div>
+      <div>{{ current_user.no_reg }}</div>
+      <a href="{{ url_for('logout') }}">Keluar &rarr;</a>
+    </div>
+    {% endif %}
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-eyebrow">{% block eyebrow %}SIMAK{% endblock %}</div>
+        <h2 style="margin-top:2px;">{% block page_title %}Dashboard{% endblock %}</h2>
+      </div>
+      <div>{% block topbar_action %}{% endblock %}</div>
+    </div>
+
+    <div class="content">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flashes">
+            {% for category, message in messages %}
+              <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</div>
+</body>
+</html>

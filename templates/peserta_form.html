@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block eyebrow %}Manajemen Data{% endblock %}
+{% block page_title %}{{ 'Ubah Peserta' if peserta else 'Tambah Peserta' }}{% endblock %}
+
+{% block content %}
+<div class="card card-pad" style="max-width:720px;">
+  <form method="POST">
+    <div class="form-grid">
+      <div class="field">
+        <label for="nama">Nama Lengkap</label>
+        <input type="text" id="nama" name="nama" required value="{{ peserta.nama if peserta else '' }}">
+      </div>
+      <div class="field">
+        <label for="nik">NIK</label>
+        <input type="text" id="nik" name="nik" value="{{ peserta.nik if peserta else '' }}">
+      </div>
+      <div class="field">
+        <label for="no_hp">No. HP</label>
+        <input type="text" id="no_hp" name="no_hp" value="{{ peserta.no_hp if peserta else '' }}">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="{{ peserta.email if peserta else '' }}">
+      </div>
+      <div class="field">
+        <label for="instansi">Instansi / Perusahaan</label>
+        <input type="text" id="instansi" name="instansi" value="{{ peserta.instansi if peserta else '' }}">
+      </div>
+      <div class="field">
+        <label for="jabatan">Jabatan</label>
+        <input type="text" id="jabatan" name="jabatan" value="{{ peserta.jabatan if peserta else '' }}">
+      </div>
+      <div class="field">
+        <label for="skema_sertifikasi">Skema Sertifikasi</label>
+        <input type="text" id="skema_sertifikasi" name="skema_sertifikasi" value="{{ peserta.skema_sertifikasi if peserta else '' }}">
+      </div>
+      <div class="field">
+        <label for="status">Status</label>
+        <select id="status" name="status">
+          <option value="Aktif" {{ 'selected' if peserta and peserta.status=='Aktif' }}>Aktif</option>
+          <option value="Nonaktif" {{ 'selected' if peserta and peserta.status=='Nonaktif' }}>Nonaktif</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:10px; display:flex; gap:10px;">
+      <button type="submit" class="btn btn-primary">Simpan</button>
+      <a href="{{ url_for('peserta_list') }}" class="btn btn-outline">Batal</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

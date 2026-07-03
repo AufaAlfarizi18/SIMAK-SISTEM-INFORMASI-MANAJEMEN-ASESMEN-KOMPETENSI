@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block eyebrow %}Laporan{% endblock %}
+{% block page_title %}Rekap &amp; Laporan Hasil{% endblock %}
+
+{% block content %}
+<div class="stat-grid" style="grid-template-columns: repeat(3, 1fr);">
+  <div class="stat-card">
+    <div class="stat-num">{{ total }}</div>
+    <div class="stat-label">Total Penilaian</div>
+  </div>
+  <div class="stat-card green">
+    <div class="stat-num">{{ kompeten }}</div>
+    <div class="stat-label">Kompeten</div>
+  </div>
+  <div class="stat-card red">
+    <div class="stat-num">{{ belum }}</div>
+    <div class="stat-label">Belum Kompeten</div>
+  </div>
+</div>
+
+<div class="actions-row">
+  <div style="display:flex; gap:8px;">
+    <a href="{{ url_for('laporan') }}" class="btn btn-sm {{ 'btn-primary' if not filter_status else 'btn-outline' }}">Semua</a>
+    <a href="{{ url_for('laporan', status='Kompeten') }}" class="btn btn-sm {{ 'btn-primary' if filter_status=='Kompeten' else 'btn-outline' }}">Kompeten</a>
+    <a href="{{ url_for('laporan', status='Belum Kompeten') }}" class="btn btn-sm {{ 'btn-primary' if filter_status=='Belum Kompeten' else 'btn-outline' }}">Belum Kompeten</a>
+  </div>
+</div>
+
+{% if rekap %}
+<table class="data-table">
+  <thead>
+    <tr><th>Tanggal Asesmen</th><th>Peserta</th><th>Instansi</th><th>Skema</th><th>Hasil</th><th>Diinput</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for r in rekap %}
+    <tr>
+      <td>{{ r.tanggal }}</td>
+      <td>{{ r.peserta_nama }}</td>
+      <td>{{ r.instansi }}</td>
+      <td>{{ r.skema }}</td>
+      <td>
+        {% if r.rekomendasi == 'Kompeten' %}
+          <span class="badge badge-green">Kompeten</span>
+        {% else %}
+          <span class="badge badge-red">Belum Kompeten</span>
+        {% endif %}
+      </td>
+      <td style="color:var(--muted); font-size:.82rem;">{{ r.tanggal_input }}</td>
+      <td><a class="btn btn-outline btn-sm" href="{{ url_for('laporan_detail', pid=r.id) }}">Detail</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty-state card card-pad">
+  <div class="glyph">&#128203;</div>
+  Belum ada data penilaian untuk ditampilkan.
+</div>
+{% endif %}
+{% endblock %}

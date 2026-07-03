@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "nama": "Siti Aminah",
+    "nik": "3515012345670001",
+    "no_hp": "081298765432",
+    "email": "siti.aminah@example.com",
+    "instansi": "PT Maju Bersama",
+    "jabatan": "Staff QC",
+    "skema_sertifikasi": "Quality Control Junior",
+    "status": "Aktif"
+  },
+  {
+    "id": 2,
+    "nama": "Ahmad Fauzi",
+    "nik": "3515019876540002",
+    "no_hp": "081311122233",
+    "email": "ahmad.fauzi@example.com",
+    "instansi": "PT Sinar Teknik",
+    "jabatan": "Teknisi Listrik",
+    "skema_sertifikasi": "Instalasi Listrik Industri",
+    "status": "Aktif"
+  },
+  {
+    "id": 3,
+    "nama": "Muhammad Aufa Alfarizi",
+    "nik": "11213355689909",
+    "no_hp": "0895410994420",
+    "email": "kuhhag7@gmail.com",
+    "instansi": "Gundar",
+    "jabatan": "Boss muda",
+    "skema_sertifikasi": "",
+    "status": "Aktif"
+  }
+]

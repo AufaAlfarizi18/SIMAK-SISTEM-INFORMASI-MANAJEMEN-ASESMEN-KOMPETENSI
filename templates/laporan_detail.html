@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block eyebrow %}Laporan{% endblock %}
+{% block page_title %}Detail Hasil Asesmen{% endblock %}
+{% block topbar_action %}
+<a href="javascript:window.print()" class="btn btn-outline">Cetak</a>
+{% endblock %}
+
+{% block content %}
+<div class="report-sheet">
+  <div class="report-head">
+    <div>
+      <h2 style="margin-bottom:2px;">Laporan Hasil Asesmen Kompetensi</h2>
+      <div style="color:var(--muted); font-size:.85rem;">SIMAK &mdash; Sistem Informasi Manajemen Asesmen Kompetensi</div>
+    </div>
+    <div class="stamp {{ 'bk' if item.rekomendasi=='Belum Kompeten' }}">
+      {{ 'KOMPETEN' if item.rekomendasi=='Kompeten' else 'BELUM KOMPETEN' }}
+    </div>
+  </div>
+
+  <div class="report-meta">
+    <div><div class="k">Nama Peserta</div>{{ peserta.nama if peserta else '-' }}</div>
+    <div><div class="k">Instansi</div>{{ peserta.instansi if peserta else '-' }}</div>
+    <div><div class="k">Skema Sertifikasi</div>{{ jadwal.skema if jadwal else '-' }}</div>
+    <div><div class="k">Tanggal Asesmen</div>{{ jadwal.tanggal if jadwal else '-' }} &middot; {{ jadwal.waktu if jadwal else '' }}</div>
+    <div><div class="k">Tempat</div>{{ jadwal.tempat if jadwal else '-' }}</div>
+    <div><div class="k">Asesor</div>{{ asesor.nama if asesor else '-' }} ({{ asesor.no_reg if asesor else '-' }})</div>
+  </div>
+
+  <h3>Elemen &amp; Kriteria Unjuk Kerja</h3>
+  {% if item.elemen %}
+  <table class="data-table" style="margin-bottom:18px;">
+    <thead>
+      <tr><th>Unit Kompetensi</th><th>Kriteria Unjuk Kerja</th><th>Nilai</th></tr>
+    </thead>
+    <tbody>
+      {% for e in item.elemen %}
+      <tr>
+        <td>{{ e.unit_kompetensi }}</td>
+        <td>{{ e.kriteria_unjuk_kerja }}</td>
+        <td>
+          {% if e.nilai == 'K' %}
+            <span class="badge badge-green">K</span>
+          {% else %}
+            <span class="badge badge-red">BK</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="color:var(--muted);">Tidak ada elemen kompetensi tercatat.</p>
+  {% endif %}
+
+  <h3>Catatan Asesor</h3>
+  <p>{{ item.catatan if item.catatan else '-' }}</p>
+
+  <div style="margin-top:24px; color:var(--muted); font-size:.78rem;">
+    Diinput pada {{ item.tanggal_input }}
+  </div>
+</div>
+
+<div style="margin-top:16px;">
+  <a href="{{ url_for('laporan') }}" class="btn btn-outline">&larr; Kembali ke Rekap</a>
+</div>
+{% endblock %}

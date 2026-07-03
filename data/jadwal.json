@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "peserta_id": 1,
+    "asesor_id": 1,
+    "skema": "Quality Control Junior",
+    "tanggal": "2026-07-10",
+    "waktu": "09:00",
+    "tempat": "Ruang Asesmen A - LSP Teknologi Industri",
+    "status": "Terjadwal"
+  },
+  {
+    "id": 2,
+    "peserta_id": 2,
+    "asesor_id": 1,
+    "skema": "Instalasi Listrik Industri",
+    "tanggal": "2026-07-12",
+    "waktu": "13:00",
+    "tempat": "Workshop Listrik - PT Sinar Teknik",
+    "status": "Selesai"
+  },
+  {
+    "id": 3,
+    "peserta_id": 3,
+    "asesor_id": 1,
+    "skema": "BEST STUDENT",
+    "tanggal": "2026-07-01",
+    "waktu": "15:56",
+    "tempat": "Universitas Gunadarma",
+    "status": "Terjadwal"
+  }
+]

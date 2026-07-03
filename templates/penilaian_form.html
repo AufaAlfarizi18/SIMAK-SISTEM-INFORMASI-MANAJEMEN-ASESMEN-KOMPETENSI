@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block eyebrow %}Asesmen{% endblock %}
+{% block page_title %}Input Penilaian — {{ peserta.nama if peserta else '' }}{% endblock %}
+
+{% block content %}
+<div class="card card-pad" style="margin-bottom:18px;">
+  <div class="form-grid single" style="grid-template-columns: repeat(4, 1fr); margin-bottom:0;">
+    <div><div class="field"><label>Peserta</label><div>{{ peserta.nama if peserta else '-' }}</div></div></div>
+    <div><div class="field"><label>Instansi</label><div>{{ peserta.instansi if peserta else '-' }}</div></div></div>
+    <div><div class="field"><label>Skema</label><div>{{ jadwal.skema }}</div></div></div>
+    <div><div class="field"><label>Tanggal Asesmen</label><div>{{ jadwal.tanggal }} · {{ jadwal.waktu }}</div></div></div>
+  </div>
+</div>
+
+<div class="card card-pad">
+  <form method="POST">
+    <h3 style="margin-bottom:12px;">Elemen &amp; Kriteria Unjuk Kerja</h3>
+
+    <div class="elemen-header">
+      <div>Unit Kompetensi</div>
+      <div>Kriteria Unjuk Kerja</div>
+      <div>Nilai</div>
+      <div></div>
+    </div>
+
+    <div id="elemen-container">
+      {% if existing and existing.elemen %}
+        {% for e in existing.elemen %}
+        <div class="elemen-row">
+          <input type="text" name="unit_kompetensi[]" value="{{ e.unit_kompetensi }}" placeholder="mis. Menyiapkan alat ukur">
+          <input type="text" name="kriteria[]" value="{{ e.kriteria_unjuk_kerja }}" placeholder="mis. Alat ukur dipilih sesuai spesifikasi">
+          <select name="nilai[]">
+            <option value="K" {{ 'selected' if e.nilai=='K' }}>K &mdash; Kompeten</option>
+            <option value="BK" {{ 'selected' if e.nilai=='BK' }}>BK &mdash; Belum Kompeten</option>
+          </select>
+          <button type="button" class="remove-row-btn" onclick="this.parentElement.remove()">&times;</button>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="elemen-row">
+          <input type="text" name="unit_kompetensi[]" placeholder="mis. Menyiapkan alat ukur">
+          <input type="text" name="kriteria[]" placeholder="mis. Alat ukur dipilih sesuai spesifikasi">
+          <select name="nilai[]">
+            <option value="K">K &mdash; Kompeten</option>
+            <option value="BK">BK &mdash; Belum Kompeten</option>
+          </select>
+          <button type="button" class="remove-row-btn" onclick="this.parentElement.remove()">&times;</button>
+        </div>
+      {% endif %}
+    </div>
+
+    <button type="button" id="add-row" class="btn btn-outline btn-sm" style="margin-top:8px;">+ Tambah Elemen</button>
+
+    <hr style="border:none; border-top:1px solid var(--line); margin:22px 0;">
+
+    <div class="field">
+      <label>Catatan Asesor</label>
+      <textarea name="catatan" placeholder="Catatan, bukti tambahan, atau rekomendasi tindak lanjut...">{{ existing.catatan if existing else '' }}</textarea>
+    </div>
+
+    <div class="field">
+      <label>Rekomendasi Keputusan</label>
+      <div class="rekomendasi-choice">
+        <label>
+          <input type="radio" name="rekomendasi" value="Kompeten" {{ 'checked' if not existing or existing.rekomendasi=='Kompeten' }}>
+          <span><strong>Kompeten</strong><br><span style="color:var(--muted); font-size:.78rem;">Memenuhi seluruh kriteria unjuk kerja</span></span>
+        </label>
+        <label>
+          <input type="radio" name="rekomendasi" value="Belum Kompeten" {{ 'checked' if existing and existing.rekomendasi=='Belum Kompeten' }}>
+          <span><strong>Belum Kompeten</strong><br><span style="color:var(--muted); font-size:.78rem;">Perlu asesmen ulang / PTK</span></span>
+        </label>
+      </div>
+    </div>
+
+    <div style="margin-top:16px; display:flex; gap:10px;">
+      <button type="submit" class="btn btn-primary">Simpan Penilaian</button>
+      <a href="{{ url_for('penilaian_list') }}" class="btn btn-outline">Batal</a>
+    </div>
+  </form>
+</div>
+
+<script>
+document.getElementById('add-row').addEventListener('click', function () {
+  const container = document.getElementById('elemen-container');
+  const row = document.createElement('div');
+  row.className = 'elemen-row';
+  row.innerHTML = `
+    <input type="text" name="unit_kompetensi[]" placeholder="mis. Menyiapkan alat ukur">
+    <input type="text" name="kriteria[]" placeholder="mis. Alat ukur dipilih sesuai spesifikasi">
+    <select name="nilai[]">
+      <option value="K">K &mdash; Kompeten</option>
+      <option value="BK">BK &mdash; Belum Kompeten</option>
+    </select>
+    <button type="button" class="remove-row-btn" onclick="this.parentElement.remove()">&times;</button>
+  `;
+  container.appendChild(row);
+});
+</script>
+{% endblock %}

@@ -1,0 +1,18 @@
+[
+  {
+    "jadwal_id": 2,
+    "peserta_id": 2,
+    "asesor_id": 1,
+    "elemen": [
+      {
+        "unit_kompetensi": "menyiapkan folder",
+        "kriteria_unjuk_kerja": "folder harus rapih",
+        "nilai": "K"
+      }
+    ],
+    "catatan": "sudah merapikan folder sudah rapih",
+    "rekomendasi": "Kompeten",
+    "tanggal_input": "2026-07-03 14:55",
+    "id": 1
+  }
+]

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block eyebrow %}Ringkasan{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-num">{{ stats.total_peserta }}</div>
+    <div class="stat-label">Total Peserta</div>
+  </div>
+  <div class="stat-card amber">
+    <div class="stat-num">{{ stats.jadwal_terjadwal }}</div>
+    <div class="stat-label">Jadwal Menunggu</div>
+  </div>
+  <div class="stat-card green">
+    <div class="stat-num">{{ stats.total_kompeten }}</div>
+    <div class="stat-label">Dinyatakan Kompeten</div>
+  </div>
+  <div class="stat-card red">
+    <div class="stat-num">{{ stats.total_belum_kompeten }}</div>
+    <div class="stat-label">Belum Kompeten</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-pad">
+    <h3 style="margin-bottom:14px;">Jadwal Asesmen Terdekat</h3>
+    {% if jadwal_mendatang %}
+    <table class="data-table">
+      <thead>
+        <tr><th>Tanggal</th><th>Waktu</th><th>Peserta</th><th>Skema</th><th>Tempat</th></tr>
+      </thead>
+      <tbody>
+        {% for j in jadwal_mendatang %}
+        <tr>
+          <td>{{ j.tanggal }}</td>
+          <td>{{ j.waktu }}</td>
+          <td>{{ j.peserta_nama }}</td>
+          <td>{{ j.skema }}</td>
+          <td>{{ j.tempat }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+      <div class="glyph">&#128197;</div>
+      Tidak ada jadwal asesmen mendatang.
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

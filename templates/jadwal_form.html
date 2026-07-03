@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block eyebrow %}Penjadwalan{% endblock %}
+{% block page_title %}{{ 'Ubah Jadwal' if jadwal else 'Tambah Jadwal Asesmen' }}{% endblock %}
+
+{% block content %}
+<div class="card card-pad" style="max-width:640px;">
+  <form method="POST">
+    <div class="field">
+      <label for="peserta_id">Peserta</label>
+      <select id="peserta_id" name="peserta_id" required>
+        <option value="">-- Pilih Peserta --</option>
+        {% for p in peserta %}
+        <option value="{{ p.id }}" {{ 'selected' if jadwal and jadwal.peserta_id==p.id }}>{{ p.nama }} — {{ p.instansi }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="field">
+      <label for="skema">Skema Sertifikasi</label>
+      <input type="text" id="skema" name="skema" required value="{{ jadwal.skema if jadwal else '' }}">
+    </div>
+    <div class="form-grid">
+      <div class="field">
+        <label for="tanggal">Tanggal</label>
+        <input type="date" id="tanggal" name="tanggal" required value="{{ jadwal.tanggal if jadwal else '' }}">
+      </div>
+      <div class="field">
+        <label for="waktu">Waktu</label>
+        <input type="time" id="waktu" name="waktu" required value="{{ jadwal.waktu if jadwal else '' }}">
+      </div>
+    </div>
+    <div class="field">
+      <label for="tempat">Tempat</label>
+      <input type="text" id="tempat" name="tempat" value="{{ jadwal.tempat if jadwal else '' }}">
+    </div>
+    {% if jadwal %}
+    <div class="field">
+      <label for="status">Status</label>
+      <select id="status" name="status">
+        <option value="Terjadwal" {{ 'selected' if jadwal.status=='Terjadwal' }}>Terjadwal</option>
+        <option value="Selesai" {{ 'selected' if jadwal.status=='Selesai' }}>Selesai</option>
+        <option value="Dibatalkan" {{ 'selected' if jadwal.status=='Dibatalkan' }}>Dibatalkan</option>
+      </select>
+    </div>
+    {% endif %}
+    <div style="margin-top:10px; display:flex; gap:10px;">
+      <button type="submit" class="btn btn-primary">Simpan</button>
+      <a href="{{ url_for('jadwal_list') }}" class="btn btn-outline">Batal</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

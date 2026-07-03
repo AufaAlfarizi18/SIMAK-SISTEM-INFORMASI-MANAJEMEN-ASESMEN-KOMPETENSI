@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block eyebrow %}Manajemen Data{% endblock %}
+{% block page_title %}Data Peserta{% endblock %}
+{% block topbar_action %}
+<a href="{{ url_for('peserta_tambah') }}" class="btn btn-primary">+ Tambah Peserta</a>
+{% endblock %}
+
+{% block content %}
+<form method="GET" class="actions-row">
+  <div class="search-box">
+    <input type="text" name="q" value="{{ q }}" placeholder="Cari nama, instansi, atau skema...">
+  </div>
+  <button type="submit" class="btn btn-outline btn-sm">Cari</button>
+</form>
+
+{% if peserta %}
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Nama</th><th>Instansi</th><th>Jabatan</th><th>Skema Sertifikasi</th><th>Status</th><th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in peserta %}
+    <tr>
+      <td><strong>{{ p.nama }}</strong><br><span style="color:var(--muted); font-size:.78rem;">{{ p.no_hp }}</span></td>
+      <td>{{ p.instansi }}</td>
+      <td>{{ p.jabatan }}</td>
+      <td>{{ p.skema_sertifikasi }}</td>
+      <td><span class="badge {{ 'badge-teal' if p.status=='Aktif' else 'badge-gray' }}">{{ p.status }}</span></td>
+      <td style="white-space:nowrap;">
+        <a class="btn btn-outline btn-sm" href="{{ url_for('peserta_edit', pid=p.id) }}">Ubah</a>
+        <form method="POST" action="{{ url_for('peserta_hapus', pid=p.id) }}" style="display:inline;" onsubmit="return confirm('Hapus data peserta {{ p.nama }}?');">
+          <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty-state card card-pad">
+  <div class="glyph">&#128100;</div>
+  Belum ada data peserta{% if q %} yang cocok dengan pencarian "{{ q }}"{% endif %}.
+</div>
+{% endif %}
+{% endblock %}

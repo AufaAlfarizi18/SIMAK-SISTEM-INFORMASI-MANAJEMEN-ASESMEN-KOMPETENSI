@@ -1,0 +1,461 @@
+/* =========================================================
+   SIMAK - Sistem Informasi Manajemen Asesmen Kompetensi
+   Tema: "Lembar Penilaian" — terinspirasi formulir asesmen
+   kompetensi fisik (kertas, stempel, checklist K/BK).
+   ========================================================= */
+
+:root {
+  --ink: #16324F;
+  --ink-soft: #274764;
+  --paper: #F4F1EA;
+  --paper-alt: #ECE7DC;
+  --card: #FFFFFF;
+  --teal: #2A7F76;
+  --teal-dark: #1C5D56;
+  --amber: #C98A2C;
+  --red: #B14A43;
+  --green: #3F7D5C;
+  --line: #D8D2C4;
+  --text: #23272A;
+  --muted: #6B6255;
+  --radius: 4px;
+  --shadow: 0 1px 2px rgba(22, 50, 79, 0.06), 0 2px 8px rgba(22, 50, 79, 0.04);
+  --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  margin: 0 0 .5rem 0;
+  letter-spacing: -0.01em;
+}
+
+a { color: var(--teal-dark); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------- Layout ---------- */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  background: var(--ink);
+  color: #EDE9DD;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar .brand {
+  padding: 22px 20px 18px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+.sidebar .brand .mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px; height: 34px;
+  background: var(--teal);
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.sidebar .brand .title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.sidebar .brand .subtitle {
+  font-size: .72rem;
+  color: #B9C3CC;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.sidebar nav {
+  flex: 1;
+  padding: 14px 10px;
+}
+
+.sidebar nav .section-label {
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: #8393A2;
+  padding: 14px 12px 6px 12px;
+}
+
+.sidebar nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  color: #D6DEE5;
+  font-size: .9rem;
+  text-decoration: none;
+  margin-bottom: 2px;
+}
+
+.sidebar nav a .letter {
+  width: 20px; height: 20px;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  flex-shrink: 0;
+}
+
+.sidebar nav a:hover {
+  background: rgba(255,255,255,0.06);
+  text-decoration: none;
+  color: #fff;
+}
+
+.sidebar nav a.active {
+  background: var(--teal);
+  color: #fff;
+}
+.sidebar nav a.active .letter {
+  border-color: rgba(255,255,255,0.6);
+}
+
+.sidebar .userbox {
+  padding: 14px 18px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  font-size: .82rem;
+}
+.sidebar .userbox .uname { color: #fff; font-weight: 600; }
+.sidebar .userbox a { color: #B9C3CC; font-size: .78rem; }
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+  padding: 16px 28px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.topbar .page-eyebrow {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.content { padding: 24px 28px 48px 28px; }
+
+/* ---------- Flash messages ---------- */
+.flashes { margin-bottom: 18px; }
+.flash {
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+  font-size: .88rem;
+  border-left: 3px solid;
+}
+.flash-success { background: #EAF4EE; border-color: var(--green); color: #2A5940; }
+.flash-danger  { background: #FBEBEA; border-color: var(--red); color: #7A322D; }
+.flash-info    { background: #EAF1F5; border-color: var(--ink-soft); color: var(--ink-soft); }
+.flash-warning { background: #FBF2E2; border-color: var(--amber); color: #7A5A1C; }
+
+/* ---------- Cards / stats ---------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.card-pad { padding: 20px 22px; }
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+  margin-bottom: 26px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+.stat-card .stat-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+}
+.stat-card .stat-label {
+  margin-top: 6px;
+  font-size: .78rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.stat-card.amber { border-left-color: var(--amber); }
+.stat-card.green { border-left-color: var(--green); }
+.stat-card.red { border-left-color: var(--red); }
+
+/* ---------- Tables ---------- */
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.data-table th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--muted);
+  background: var(--paper-alt);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.data-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--line);
+  font-size: .89rem;
+  vertical-align: middle;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: #FBFAF6; }
+
+/* ---------- Badges ---------- */
+.badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 100px;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+.badge-teal  { background: #E4F1EF; color: var(--teal-dark); }
+.badge-green { background: #E5F2EA; color: var(--green); }
+.badge-red   { background: #F7E7E5; color: var(--red); }
+.badge-amber { background: #F7EBD4; color: var(--amber); }
+.badge-gray  { background: #ECE7DC; color: var(--muted); }
+
+/* ---------- Forms ---------- */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.form-grid.single { grid-template-columns: 1fr; }
+.field { margin-bottom: 14px; display: flex; flex-direction: column; }
+.field label {
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: 5px;
+}
+.field input, .field select, .field textarea {
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: .9rem;
+  background: #fff;
+  color: var(--text);
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: 2px solid var(--teal);
+  outline-offset: 1px;
+  border-color: var(--teal);
+}
+.field textarea { resize: vertical; min-height: 70px; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: var(--radius);
+  font-size: .87rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-family: var(--font-body);
+  text-decoration: none;
+}
+.btn:hover { text-decoration: none; }
+.btn-primary { background: var(--teal); color: #fff; }
+.btn-primary:hover { background: var(--teal-dark); }
+.btn-outline { background: transparent; border-color: var(--line); color: var(--ink); }
+.btn-outline:hover { background: var(--paper-alt); }
+.btn-danger { background: #fff; border-color: var(--red); color: var(--red); }
+.btn-danger:hover { background: #FBEBEA; }
+.btn-sm { padding: 5px 10px; font-size: .78rem; }
+
+.actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.search-box input {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  width: 260px;
+  font-size: .87rem;
+}
+
+/* ---------- Login page ---------- */
+.login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(42,127,118,0.35), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(201,138,44,0.25), transparent 40%);
+  padding: 20px;
+}
+.login-card {
+  background: var(--paper);
+  width: 100%;
+  max-width: 400px;
+  border-radius: 6px;
+  padding: 34px 32px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+}
+.login-mark {
+  width: 42px; height: 42px;
+  background: var(--teal);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-family: var(--font-display); font-weight: 700;
+  margin-bottom: 18px;
+}
+.login-card h1 { font-size: 1.3rem; margin-bottom: 2px; }
+.login-card .sub { color: var(--muted); font-size: .85rem; margin-bottom: 22px; }
+.login-hint {
+  margin-top: 18px;
+  padding: 10px 12px;
+  background: #ECE7DC;
+  border-radius: var(--radius);
+  font-size: .78rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+
+/* ---------- Penilaian: elemen kompetensi table ---------- */
+.elemen-row { display: grid; grid-template-columns: 1fr 1fr 130px 34px; gap: 10px; margin-bottom: 8px; align-items: start; }
+.elemen-header { display: grid; grid-template-columns: 1fr 1fr 130px 34px; gap: 10px; font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-bottom: 6px; }
+.remove-row-btn {
+  width: 34px; height: 34px;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: var(--radius);
+  color: var(--red);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.rekomendasi-choice { display: flex; gap: 12px; margin-top: 4px; }
+.rekomendasi-choice label {
+  flex: 1;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: .88rem;
+}
+.rekomendasi-choice input { accent-color: var(--teal); }
+
+/* ---------- Detail laporan (gaya sertifikat/lembar) ---------- */
+.report-sheet {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 30px 34px;
+  max-width: 760px;
+}
+.report-sheet .report-head {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+}
+.report-sheet .stamp {
+  border: 3px solid var(--green);
+  color: var(--green);
+  font-family: var(--font-display);
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 6px;
+  transform: rotate(-4deg);
+  font-size: .9rem;
+  letter-spacing: .05em;
+}
+.report-sheet .stamp.bk { border-color: var(--red); color: var(--red); }
+.report-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; margin-bottom: 20px; font-size: .88rem; }
+.report-meta .k { color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; }
+
+.empty-state {
+  text-align: center;
+  padding: 50px 20px;
+  color: var(--muted);
+}
+.empty-state .glyph { font-size: 2.2rem; margin-bottom: 10px; }
+
+@media (max-width: 860px) {
+  .app-shell { flex-direction: column; }
+  .sidebar { width: 100%; }
+  .form-grid { grid-template-columns: 1fr; }
+  .elemen-row, .elemen-header { grid-template-columns: 1fr; }
+}

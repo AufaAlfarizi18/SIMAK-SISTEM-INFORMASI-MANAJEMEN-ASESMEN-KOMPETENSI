@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block eyebrow %}Penjadwalan{% endblock %}
+{% block page_title %}Jadwal Asesmen{% endblock %}
+{% block topbar_action %}
+<a href="{{ url_for('jadwal_tambah') }}" class="btn btn-primary">+ Tambah Jadwal</a>
+{% endblock %}
+
+{% block content %}
+{% if jadwal %}
+<table class="data-table">
+  <thead>
+    <tr><th>Tanggal</th><th>Waktu</th><th>Peserta</th><th>Skema</th><th>Tempat</th><th>Status</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for j in jadwal %}
+    <tr>
+      <td>{{ j.tanggal }}</td>
+      <td>{{ j.waktu }}</td>
+      <td>{{ j.peserta_nama }}</td>
+      <td>{{ j.skema }}</td>
+      <td>{{ j.tempat }}</td>
+      <td>
+        {% if j.status == 'Selesai' %}
+          <span class="badge badge-green">Selesai</span>
+        {% elif j.status == 'Dibatalkan' %}
+          <span class="badge badge-red">Dibatalkan</span>
+        {% else %}
+          <span class="badge badge-amber">Terjadwal</span>
+        {% endif %}
+      </td>
+      <td style="white-space:nowrap;">
+        <a class="btn btn-outline btn-sm" href="{{ url_for('jadwal_edit', jid=j.id) }}">Ubah</a>
+        <form method="POST" action="{{ url_for('jadwal_hapus', jid=j.id) }}" style="display:inline;" onsubmit="return confirm('Hapus jadwal ini?');">
+          <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty-state card card-pad">
+  <div class="glyph">&#128197;</div>
+  Belum ada jadwal asesmen.
+</div>
+{% endif %}
+{% endblock %}

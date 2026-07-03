@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "username": "asesor1",
+    "password_hash": "scrypt:32768:8:1$v72kXrdPSslmiGHN$c63b0feade1812637eccfd0e87bbada1b59123adc3fe6a04dd49b7d6947a1d5d84477c5a28ec2d5fff4f64f5991655f1349f42b9312df708b75e5a520e08b10c",
+    "nama": "Dodi Mei hendra",
+    "no_reg": "MET.000.123456 2024",
+    "spesialisasi": "Assesor",
+    "email": "lovefariz777@gmail.com",
+    "no_hp": "081278705464",
+    "instansi": "Kemendagri",
+    "foto": ""
+  }
+]

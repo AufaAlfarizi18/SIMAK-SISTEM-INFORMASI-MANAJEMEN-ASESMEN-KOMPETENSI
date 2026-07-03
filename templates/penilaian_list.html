@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block eyebrow %}Asesmen{% endblock %}
+{% block page_title %}Input Penilaian Kompetensi{% endblock %}
+
+{% block content %}
+{% if jadwal %}
+<table class="data-table">
+  <thead>
+    <tr><th>Tanggal</th><th>Peserta</th><th>Skema</th><th>Asesor</th><th>Status</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for j in jadwal %}
+    <tr>
+      <td>{{ j.tanggal }} · {{ j.waktu }}</td>
+      <td>{{ j.peserta_nama }}</td>
+      <td>{{ j.skema }}</td>
+      <td>{{ j.asesor_nama }}</td>
+      <td>
+        {% if j.sudah_dinilai %}
+          <span class="badge badge-green">Sudah Dinilai</span>
+        {% else %}
+          <span class="badge badge-amber">Belum Dinilai</span>
+        {% endif %}
+      </td>
+      <td>
+        <a class="btn btn-sm {{ 'btn-outline' if j.sudah_dinilai else 'btn-primary' }}" href="{{ url_for('penilaian_input', jid=j.id) }}">
+          {{ 'Lihat / Ubah' if j.sudah_dinilai else 'Input Nilai' }}
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty-state card card-pad">
+  <div class="glyph">&#9989;</div>
+  Belum ada jadwal asesmen untuk dinilai.
+</div>
+{% endif %}
+{% endblock %}
